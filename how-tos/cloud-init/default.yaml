@@ -1,0 +1,18 @@
+#cloud-config
+
+chpasswd:
+  expire: false
+  users:
+    - name: root
+      password: root
+      type: text
+    - name: ubuntu
+      password: ubuntu
+      type: text
+
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE5vDLeTpVIqNAsYmbFbLUp7EEfSDbrNx/bJVYAev6r9 arthunix

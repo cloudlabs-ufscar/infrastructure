@@ -1,0 +1,313 @@
+machines:
+  '0': # mysql 1, ovn-central 1
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '1': # mysql 2, ovn-central 2
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '2': # mysql 3, ovn-central 3
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '3': # glance
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '4': # keystone
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '5': # neutron-api
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '6': # placement
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '7': # nova-cloud-controller
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '8': # dashboard
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '9': # vault
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '10': # rabbitmq
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '11': # heat
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+# '12': # cinder
+#   constraints: tags=cinder-cirrus zones=cirrus
+# '13': # nova-compute 0 (compute 0 cirrus)
+#   constraints: tags=c0c zones=cirrus
+# '14': # nova-compute 1 (compute 1 cirrus)
+#   constraints: tags=c1c zones=cirrus
+# '15': # octavia
+#   constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+# '16': # swift-proxy
+#   constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+# '17': # grafana
+#   constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+
+relations:
+# identity
+- - glance:identity-service                     # glance
+  - keystone:identity-service
+- - neutron-api:identity-service                # neutron-api
+  - keystone:identity-service
+- - nova-cloud-controller:identity-service      # nova-cloud-controller
+  - keystone:identity-service
+- - openstack-dashboard:identity-service        # openstack-dashboard
+  - keystone:identity-service
+- - placement:identity-service                  # placement
+  - keystone:identity-service
+- - heat:identity-service                       # heat
+  - keystone:identity-service
+
+# rabbitmq
+- - glance:amqp                                 # glance
+  - rabbitmq-server:amqp
+- - neutron-api:amqp                            # neutron-api
+  - rabbitmq-server:amqp
+- - nova-cloud-controller:amqp                  # nova-cloud-controller
+  - rabbitmq-server:amqp
+- - heat:amqp                                   # heat
+  - rabbitmq-server:amqp
+
+# shared-db
+- - glance:shared-db                            # glance
+  - glance-mysql-router:shared-db
+- - keystone:shared-db                          # keystone
+  - keystone-mysql-router:shared-db
+- - neutron-api:shared-db                       # neutron-api
+  - neutron-mysql-router:shared-db
+- - nova-cloud-controller:shared-db             # nova-cloud-controller
+  - nova-mysql-router:shared-db
+- - openstack-dashboard:shared-db               # openstack-dashboard
+  - dashboard-mysql-router:shared-db
+- - placement:shared-db                         # placement
+  - placement-mysql-router:shared-db
+- - vault:shared-db                             # vault
+  - vault-mysql-router:shared-db
+- - heat:shared-db                              # heat
+  - heat-mysql-router:shared-db
+
+# db-router
+- - dashboard-mysql-router:db-router            # dashboard-mysql-router
+  - mysql-innodb-cluster:db-router
+- - glance-mysql-router:db-router               # glance-mysql-router
+  - mysql-innodb-cluster:db-router
+- - keystone-mysql-router:db-router             # keystone
+  - mysql-innodb-cluster:db-router
+- - neutron-mysql-router:db-router              # neutron-mysql-router
+  - mysql-innodb-cluster:db-router
+- - nova-mysql-router:db-router                 # nova-mysql-router
+  - mysql-innodb-cluster:db-router
+- - placement-mysql-router:db-router            # placement-mysql-router
+  - mysql-innodb-cluster:db-router
+- - vault-mysql-router:db-router                # vault-mysql-router
+  - mysql-innodb-cluster:db-router
+- - heat-mysql-router:db-router                 # heat-mysql-router
+  - mysql-innodb-cluster:db-router
+
+# certificates
+- - glance:certificates                         # glance
+  - vault:certificates
+- - keystone:certificates                       # keystone
+  - vault:certificates
+- - mysql-innodb-cluster:certificates           # mysql-innodb-cluster
+  - vault:certificates
+- - neutron-api:certificates                    # neutron-api
+  - vault:certificates
+- - neutron-api-plugin-ovn:certificates         # neutron-api-plugin-ovn
+  - vault:certificates
+- - nova-cloud-controller:certificates          # nova-cloud-controller
+  - vault:certificates
+- - ovn-central:certificates                    # ovn-central
+  - vault:certificates 
+- - openstack-dashboard:certificates            # openstack-dashboard
+  - vault:certificates
+- - placement:certificates                      # placement
+  - vault:certificates
+- - heat:certificates                           # heat
+  - vault:certificates
+
+# image-service
+- - nova-cloud-controller:image-service         # nova-cloud-controller
+  - glance:image-service
+
+# placement
+- - placement:placement                         # placement
+  - nova-cloud-controller:placement
+
+# neutron-api
+- - nova-cloud-controller:neutron-api           # nova-cloud-controller
+  - neutron-api:neutron-api
+
+- - neutron-api-plugin-ovn:neutron-plugin       # neutron-plugin
+  - neutron-api:neutron-plugin-api-subordinate
+
+- - ovn-central:ovsdb-cms                   # ovn-central
+  - neutron-api-plugin-ovn:ovsdb-cms
+
+applications:
+  # Dashboard
+  openstack-dashboard:
+    charm: ch:openstack-dashboard
+    channel: 2023.1/stable
+    num_units: 1
+    to:
+    - '8'
+    bindings:
+      "": cirrus
+
+  dashboard-mysql-router:
+    charm: ch:mysql-router
+    channel: 8.0/stable
+    bindings:
+      "": cirrus
+
+  # Glance
+  glance:
+    charm: ch:glance
+    channel: 2023.1/stable
+    num_units: 1
+    to:
+    - '3'
+    bindings:
+      "": cirrus
+
+  glance-mysql-router:
+    charm: ch:mysql-router
+    channel: 8.0/stable
+    bindings:
+      "": cirrus
+
+  # Keystone
+  keystone:
+    charm: ch:keystone
+    channel: 2023.1/stable
+    num_units: 1
+    to:
+    - '4'
+    bindings:
+      "": cirrus
+
+  keystone-mysql-router:
+    charm: ch:mysql-router
+    channel: 8.0/stable
+    bindings:
+      "": cirrus
+
+  # Neutron api
+  neutron-api:
+    charm: ch:neutron-api
+    channel: 2023.1/stable
+    num_units: 1
+    options:
+      neutron-security-groups: true
+      flat-network-providers: physnet
+    to:
+    - '5'
+    bindings:
+      "": cirrus
+
+  neutron-api-plugin-ovn:
+    charm: ch:neutron-api-plugin-ovn
+    channel: 2023.1/stable
+    bindings:
+      "": cirrus
+
+  neutron-mysql-router:
+    charm: ch:mysql-router
+    channel: 8.0/stable
+    bindings:
+      "": cirrus
+
+  # Nova cloud controller
+  nova-cloud-controller:
+    charm: ch:nova-cloud-controller
+    channel: 2023.1/stable
+    num_units: 1
+    options:
+      network-manager: Neutron
+      console-access-protocol: novnc
+    to:
+    - '7'
+    bindings:
+      "": cirrus
+
+  nova-mysql-router:
+    charm: ch:mysql-router
+    channel: 8.0/stable
+    bindings:
+      "": cirrus
+
+  # Placement
+  placement:
+    charm: ch:placement
+    channel: 2023.1/stable
+    num_units: 1
+    to:
+    - '6'
+    bindings:
+      "": cirrus
+
+  placement-mysql-router:
+    charm: ch:mysql-router
+    channel: 8.0/stable
+    bindings:
+      "": cirrus
+
+  # Innodb
+  mysql-innodb-cluster:
+    charm: ch:mysql-innodb-cluster
+    channel: 8.0/stable
+    num_units: 3
+    to:
+    - '0'
+    - '1'
+    - '2'
+    bindings:
+      "": cirrus
+
+  # ovn-central
+  ovn-central:
+    charm: ch:ovn-central
+    channel: 23.03/stable
+    num_units: 3
+    to:
+    - '0'
+    - '1'
+    - '2'
+    bindings:
+      "": cirrus
+
+  # Vault
+  vault:
+    charm: ch:vault
+    channel: 1.8/stable
+    num_units: 1
+    to:
+    - '9'
+    bindings:
+      "": cirrus
+
+  vault-mysql-router:
+    charm: ch:mysql-router
+    channel: 8.0/stable
+    bindings:
+      "": cirrus
+
+  # RabbitMQ Server
+  rabbitmq-server:
+    charm: ch:rabbitmq-server
+    channel: 3.9/stable
+    num_units: 1
+    to:
+    - '10'
+    bindings:
+      "": cirrus
+
+  # Heat
+  heat:
+    charm: ch:heat
+    channel: 2023.1/stable
+    num_units: 1
+    to:
+    - '11'
+    bindings:
+      "": cirrus
+
+  heat-mysql-router:
+    charm: ch:mysql-router
+    channel: 8.0/stable
+    bindings:
+      "": cirrus

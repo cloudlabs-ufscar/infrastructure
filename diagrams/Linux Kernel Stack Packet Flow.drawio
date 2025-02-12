@@ -1,0 +1,97 @@
+<mxfile host="Electron" modified="2023-12-15T04:20:42.772Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="jfF-bZF5n0QrHo1_xtR5" version="22.1.2" type="device">
+  <diagram name="Page-1" id="w8_S5TmL2r0f86E46Wo3">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4endi4bcwsb1yCAgkRAY-1" value="Linux Kernel / PCI Controller" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontColor=#ffffff;fontFamily=Courier New;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="360" y="720" width="560" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-2" value="NIC" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6a00ff;fontColor=#ffffff;strokeColor=#3700CC;fontSize=16;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="200" y="680" width="640" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-3" value="Device Driver" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;fontSize=16;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="200" y="640" width="560" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-4" value="&lt;div style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;struct &lt;span class=&quot;pl-smi&quot; style=&quot;font-size: 16px;&quot;&gt;net_device&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;static &lt;span class=&quot;pl-k&quot; style=&quot;font-size: 16px;&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;pl-k&quot; style=&quot;font-size: 16px;&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;pl-smi&quot; style=&quot;font-size: 16px;&quot;&gt;net_device_ops&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 16px;&quot;&gt;&lt;span class=&quot;pl-smi&quot; style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;net_device_ops.&lt;/span&gt;ndo_open&lt;/div&gt;&lt;div style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;/* configure irqs */&lt;/div&gt;&lt;div style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;/* enable irqs */&lt;/div&gt;&lt;div style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;/* enable NAPI */&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 16px;&quot;&gt;&lt;span class=&quot;pl-c1&quot; style=&quot;font-size: 16px;&quot;&gt;&lt;/span&gt;&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#e51400;fontColor=#ffffff;strokeColor=#B20000;gradientColor=none;shadow=0;sketch=1;curveFitting=1;jiggle=2;fontSize=16;fontFamily=Courier New;align=left;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="930" y="490" width="470" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-5" value="&lt;div style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;#define &lt;span class=&quot;pl-en&quot; style=&quot;font-size: 16px;&quot;&gt;MODULE_DEVICE_TABLE&lt;/span&gt;(&lt;span class=&quot;pl-s1&quot; style=&quot;font-size: 16px;&quot;&gt;type&lt;/span&gt;, &lt;span class=&quot;pl-s1&quot; style=&quot;font-size: 16px;&quot;&gt;name&lt;/span&gt;)&lt;/div&gt;&lt;div style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;struct &lt;span class=&quot;pl-smi&quot; style=&quot;font-size: 16px;&quot;&gt;pci_driver&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;struct &lt;span class=&quot;pl-smi&quot; style=&quot;font-size: 16px;&quot;&gt;pci_error_handlers&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;#define &lt;span class=&quot;pl-en&quot; style=&quot;font-size: 16px;&quot;&gt;module_pci_driver&lt;/span&gt;(&lt;span class=&quot;pl-s1&quot; style=&quot;font-size: 16px;&quot;&gt;__pci_driver&lt;/span&gt;)&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;align=left;fontFamily=Courier New;sketch=1;curveFitting=1;jiggle=2;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="670" width="490" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4endi4bcwsb1yCAgkRAY-1" target="4endi4bcwsb1yCAgkRAY-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-10" value="Packet" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Courier New;fontSize=16;fillColor=#a0522d;fontColor=#ffffff;strokeColor=#6D1F00;" vertex="1" parent="1">
+          <mxGeometry x="200" y="840" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.125;entryY=1.025;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4endi4bcwsb1yCAgkRAY-10" target="4endi4bcwsb1yCAgkRAY-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-12" value="Ring Buffer (RAM Memory)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#a0522d;fontSize=18;fontFamily=Courier New;sketch=1;curveFitting=1;jiggle=2;strokeColor=#6D1F00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="200" y="490" width="560" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4endi4bcwsb1yCAgkRAY-3" target="4endi4bcwsb1yCAgkRAY-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-14" value="&lt;font style=&quot;font-size: 16px;&quot; face=&quot;Courier New&quot;&gt;DMA (Direct Memory Acess)&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" vertex="1" connectable="0" parent="4endi4bcwsb1yCAgkRAY-13">
+          <mxGeometry x="0.12" y="3" relative="1" as="geometry">
+            <mxPoint x="133" y="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4endi4bcwsb1yCAgkRAY-3" target="4endi4bcwsb1yCAgkRAY-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-16" value="softnet_data poll list" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#a0522d;fontSize=18;fontFamily=Courier New;fontColor=#ffffff;strokeColor=#6D1F00;sketch=1;curveFitting=1;jiggle=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="290" width="560" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4endi4bcwsb1yCAgkRAY-12" target="4endi4bcwsb1yCAgkRAY-16">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="470" />
+              <mxPoint x="380" y="470" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-18" value="&lt;p id=&quot;docs-internal-guid-a10538ae-7fff-2363-2052-64b4fc013a88&quot; style=&quot;line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt; font-size: 14px;&quot; dir=&quot;ltr&quot;&gt;&amp;nbsp;__napi_schedule(struct napi_struct *n)&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;/p&gt;&lt;p id=&quot;docs-internal-guid-a10538ae-7fff-2363-2052-64b4fc013a88&quot; style=&quot;line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt; font-size: 14px;&quot; dir=&quot;ltr&quot;&gt;&amp;nbsp;____napi_schedule(struct softnet_data *sd, struct napi_struct *napi)&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;/p&gt;&lt;p id=&quot;docs-internal-guid-e8662c5f-7fff-08f2-be18-2574cde855c3&quot; style=&quot;line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt; font-size: 14px;&quot; dir=&quot;ltr&quot;&gt;&amp;nbsp;__raise_softirq_irqoff(unsigned int nr)&lt;/p&gt;&lt;p id=&quot;docs-internal-guid-afca4ec5-7fff-6bcb-79cc-32d3be4069ef&quot; style=&quot;line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt; font-size: 14px;&quot; dir=&quot;ltr&quot;&gt;&amp;nbsp;net_rx_action(struct softirq_action *h)&lt;/p&gt;" style="edgeLabel;html=1;align=left;verticalAlign=middle;resizable=0;points=[];fontSize=14;fontFamily=Courier New;labelBackgroundColor=none;" vertex="1" connectable="0" parent="4endi4bcwsb1yCAgkRAY-17">
+          <mxGeometry x="0.375" y="1" relative="1" as="geometry">
+            <mxPoint x="1" y="-26" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="4endi4bcwsb1yCAgkRAY-19" target="4endi4bcwsb1yCAgkRAY-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-24" value="&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;deliver_skb(struct &lt;span class=&quot;pl-smi&quot; style=&quot;font-size: 14px;&quot;&gt;sk_buff&lt;/span&gt; &lt;span class=&quot;pl-c1&quot; style=&quot;font-size: 14px;&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pl-s1&quot; style=&quot;font-size: 14px;&quot;&gt;skb&lt;/span&gt;,&amp;nbsp;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;span class=&quot;pl-k&quot; style=&quot;font-size: 14px;&quot;&gt;&lt;span style=&quot;white-space: pre; font-size: 14px;&quot;&gt;&#x9;&lt;/span&gt;struct&lt;/span&gt; &lt;span class=&quot;pl-smi&quot; style=&quot;font-size: 14px;&quot;&gt;packet_type&lt;/span&gt; &lt;span class=&quot;pl-c1&quot; style=&quot;font-size: 14px;&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pl-s1&quot; style=&quot;font-size: 14px;&quot;&gt;pt_prev&lt;/span&gt;,&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;span class=&quot;pl-k&quot; style=&quot;font-size: 14px;&quot;&gt;&lt;span style=&quot;white-space: pre; font-size: 14px;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre; font-size: 14px;&quot;&gt;&#x9;&lt;/span&gt;struct&lt;/span&gt; &lt;span class=&quot;pl-smi&quot; style=&quot;font-size: 14px;&quot;&gt;net_device&lt;/span&gt; &lt;span class=&quot;pl-c1&quot; style=&quot;font-size: 14px;&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pl-s1&quot; style=&quot;font-size: 14px;&quot;&gt;orig_dev&lt;/span&gt;)&lt;/font&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=left;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=14;fontFamily=Courier New;" vertex="1" connectable="0" parent="4endi4bcwsb1yCAgkRAY-23">
+          <mxGeometry x="0.322" y="-2" relative="1" as="geometry">
+            <mxPoint x="-305" y="17" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-19" value="GRO list" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d80073;fontSize=18;fontFamily=Courier New;fontColor=#ffffff;strokeColor=#A50040;sketch=1;curveFitting=1;jiggle=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="540" y="110" width="560" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4endi4bcwsb1yCAgkRAY-16" target="4endi4bcwsb1yCAgkRAY-19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="380" y="250" />
+              <mxPoint x="685" y="250" />
+              <mxPoint x="685" y="320" />
+              <mxPoint x="820" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-21" value="&lt;div align=&quot;left&quot; style=&quot;font-size: 14px;&quot;&gt;&lt;font face=&quot;Courier New&quot; style=&quot;font-size: 14px;&quot;&gt;(device driver) -&amp;gt; napi_gro_receive&lt;br style=&quot;font-size: 14px;&quot;&gt;napi_gro_receive -&amp;gt; napi_skb_finish&lt;br style=&quot;font-size: 14px;&quot;&gt;napi_skb_finish -&amp;gt; netif_receive_skb / gro_normal_one&lt;br style=&quot;font-size: 14px;&quot;&gt;gro_normal_one -&amp;gt; gro_normal_list&lt;br style=&quot;font-size: 14px;&quot;&gt;gro_normal_list -&amp;gt; netif_receive_skb_list_internal&lt;br style=&quot;font-size: 14px;&quot;&gt;netif_receive_skb_list_internal -&amp;gt; __netif_receive_skb_list&lt;br style=&quot;font-size: 14px;&quot;&gt;__netif_receive_skb_list -&amp;gt; __netif_receive_skb_list_core&lt;br style=&quot;font-size: 14px;&quot;&gt;__netif_receive_skb_list_core -&amp;gt; __netif_receive_skb_core&lt;/font&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="840" y="220" width="660" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-22" value="&lt;div&gt;L3/L4 Protocol Layers&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" vertex="1" parent="1">
+          <mxGeometry x="160" y="40" width="320" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-27" value="Native XDP" style="shape=card;whiteSpace=wrap;html=1;fillColor=#e51400;fontColor=#ffffff;strokeColor=#B20000;fontFamily=Courier New;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="40" y="610" width="190" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="4endi4bcwsb1yCAgkRAY-28" value="Generic XDP / IPVS / nft" style="shape=card;whiteSpace=wrap;html=1;fillColor=#e51400;fontColor=#ffffff;strokeColor=#B20000;fontFamily=Courier New;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="425" y="20" width="375" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,83 @@
+machines:
+  '0': # mysql 1, ovn-central 1
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '1': # mysql 2, ovn-central 2
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '2': # mysql 3, ovn-central 3
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '3': # glance
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '4': # keystone
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '5': # neutron-api
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '6': # placement
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '7': # nova-cloud-controller
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '8': # dashboard
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '9': # vault
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '10': # rabbitmq
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '11': # heat
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '12': # cinder
+    constraints: tags=cinder-cirrus zones=cirrus
+# '13': # nova-compute 0 (compute 0 cirrus)
+#   constraints: tags=c0c zones=cirrus
+# '14': # nova-compute 1 (compute 1 cirrus)
+#   constraints: tags=c1c zones=cirrus
+# '15': # octavia
+#   constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+# '16': # swift-proxy
+#   constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+# '17': # grafana
+#   constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+
+relations:
+- - cinder:image-service                          # image-service
+  - glance:image-service
+- - cinder:cinder-volume-service                  # cinder-volume-service
+  - nova-cloud-controller:cinder-volume-service
+- - cinder:certificates                           # certificates
+  - vault:certificates
+- - cinder-mysql-router:db-router                 # db-router
+  - mysql-innodb-cluster:db-router
+- - cinder-mysql-router:shared-db                 # shared-db
+  - cinder:shared-db
+- - cinder:amqp                                   # amqp
+  - rabbitmq-server:amqp
+- - cinder:identity-service                       # identity-service
+  - keystone:identity-service
+- - cinder:storage-backend                        # storage-backend
+  - cinder-lvm:storage-backend
+
+applications:
+  cinder:
+    charm: ch:cinder
+    channel: 2023.1/stable
+    num_units: 1
+    options:
+      block-device: none
+      glance-api-version: 2
+    to:
+    - '12'
+    bindings:
+      "": cirrus
+
+  cinder-lvm:
+    charm: ch:cinder-lvm
+    channel: 2023.1/stable
+    options:
+      block-device: sdb sdc
+      config-flags: "target_helper=lioadm"
+    bindings:
+      "": cirrus
+
+  cinder-mysql-router:
+    charm: ch:mysql-router
+    channel: 8.0/stable
+    bindings:
+      "": cirrus

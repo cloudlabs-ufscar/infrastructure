@@ -1,0 +1,80 @@
+machines:
+  '0': # mysql 1, ovn-central 1
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '1': # mysql 2, ovn-central 2
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '2': # mysql 3, ovn-central 3
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '3': # glance
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '4': # keystone
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '5': # neutron-api
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '6': # placement
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '7': # nova-cloud-controller
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '8': # dashboard
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '9': # vault
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '10': # rabbitmq
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '11': # heat
+    constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+  '12': # cinder
+    constraints: tags=cinder-cirrus zones=cirrus
+  '13': # nova-compute 0 (compute 0 cirrus)
+    constraints: tags=c0c zones=cirrus
+  '14': # nova-compute 1 (compute 1 cirrus)
+    constraints: tags=c1c zones=cirrus
+# '15': # octavia
+#   constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+# '16': # swift-proxy
+#   constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+# '17': # grafana
+#   constraints: mem=6G cores=2 root-disk=20G tags=^c0c,^c1c,^cinder-cirrus zones=cirrus
+
+relations:
+# nova-compute
+- - nova-compute:amqp                       # amqp
+  - rabbitmq-server:amqp
+- - nova-compute:image-service              # glance
+  - glance:image-service
+- - nova-compute:neutron-plugin             # neutron-plugin
+  - ovn-chassis:nova-compute
+- - nova-compute:cloud-compute              # cloud-compute
+  - nova-cloud-controller:cloud-compute
+- - ovn-chassis:certificates                # certificates
+  - vault:certificates
+- - ovn-central:ovsdb                       # ovsdb
+  - ovn-chassis:ovsdb
+
+applications:
+  nova-compute:
+    charm: nova-compute
+    channel: 2023.1/stable
+    num_units: 2
+    options:
+      config-flags: default_ephemeral_format=ext4
+      ephemeral-device: /dev/sdb
+      enable-live-migration: true
+      enable-resize: true
+      migration-auth-type: ssh
+      virt-type: kvm
+    to:
+    - '13'
+    - '14'
+    bindings:
+      "": cirrus
+
+  ovn-chassis:
+    charm: ovn-chassis
+    channel: 23.03/stable
+    options:
+      bridge-interface-mappings: br-ex:eno2
+      ovn-bridge-mappings: physnet:br-ex
+      prefer-chassis-as-gw: true
+    bindings:
+      "": cirrus
