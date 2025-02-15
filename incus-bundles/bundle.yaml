@@ -1,0 +1,94 @@
+default-base: ubuntu@22.04/stable
+
+applications:
+  incus:
+    charm: incus
+    channel: edge
+    num_units: 3
+    to:
+      - 3
+      - 4
+      - 5
+    bindings:
+      "": incus
+      "public": public
+    options:
+      ceph-rbd-features: layering,deep-flatten
+      enable-web-ui: true
+  vault:
+    charm: vault
+    channel: 1.8/stable
+    num_units: 1
+    to:
+      - lxd:0
+    bindings:
+      "": incus
+  ceph-osd:
+    charm: ceph-osd
+    channel: latest/edge
+    num_units: 3
+    to:
+      - 3
+      - 4
+      - 5
+    bindings:
+      "": incus
+    options:
+      osd-devices: /dev/sdb /dev/sdc /dev/sdd
+  ceph-mon:
+    charm: ceph-mon
+    channel: latest/edge
+    num_units: 3
+    to:
+      - lxd:0
+      - lxd:1
+      - lxd:2
+    bindings:
+      "": incus
+  ovn-central:
+    charm: ovn-central
+    channel: latest/edge
+    num_units: 3
+    to:
+      - lxd:0
+      - lxd:1
+      - lxd:2
+    bindings:
+      "": incus
+  ovn-chassis:
+    charm: ovn-chassis
+    channel: latest/edge
+    bindings:
+      "": incus
+
+machines:
+  0: # ceph-monitor + ovn-central
+    constraints: tags=^metal,^openstack mem=6G cores=4 root-disk=50G zones=default spaces=incus
+  1: # ceph-monitor + ovn-central
+    constraints: tags=^metal,^openstack mem=6G cores=4 root-disk=50G zones=default spaces=incus
+  2: # ceph-monitor + ovn-central
+    constraints: tags=^metal,^openstack mem=6G cores=4 root-disk=50G zones=default spaces=incus
+  3: # incus: ceph-object-storage-daemon + ovn-chassis
+    constraints: tags=incus,metal
+  4: # incus: ceph-object-storage-daemon + ovn-chassis
+    constraints: tags=incus,metal
+  5: # incus: ceph-object-storage-daemon + ovn-chassis
+    constraints: tags=incus,metal
+
+relations:
+  - - incus:certificates
+    - vault:certificates
+  - - ceph-osd:mon
+    - ceph-mon:osd
+  - - incus:ceph
+    - ceph-mon:client
+  - - ovn-central:certificates
+    - vault:certificates
+  - - ovn-chassis:juju-info
+    - incus:juju-info
+  - - ovn-chassis:ovsdb
+    - ovn-central:ovsdb
+  - - ovn-chassis:certificates
+    - vault:certificates
+  - - incus:ovsdb-cms
+    - ovn-central:ovsdb-cms
