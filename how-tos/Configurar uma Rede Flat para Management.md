@@ -25,25 +25,3 @@
 <img src="img/FlatNetworkConfig3.png" width=30% height=auto>
 
 Já é possível usar a rede para comunicar-se com as instâncias via controller e por meio do servidor vnc
-
-## via cli
-```sh
-openstack network create \
-	--external --share \
-	--provider-network-type flat \
-	--provider-physical-network physnet1 management-network
-```
-```sh
-openstack subnet create \
-	--network management-network \
-	--no-dhcp \
-	--gateway 10.84.0.1 \
-	--subnet-range 10.84.0.0/16 \
-	--allocation-pool start=10.84.100.10,end=10.84.100.254 \
-	--dns-nameserver 200.18.99.1 \
-	--dns-nameserver 1.1.1.1 \
-	--dns-nameserver 8.8.8.8 \
-	--dns-nameserver 8.8.4.4 \
-	--dns-nameserver 1.0.0.1 \
-	management-subnet
-```

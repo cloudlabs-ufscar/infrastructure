@@ -83,97 +83,66 @@ Agora clique em "finish" e voilà, temos nossa rede flat criada pelo Dashboard
 
 ## Criando uma rede flat pela CLI do OpenStack
 Uma outra maneira mais direta de criar é usando a CLI do OpenStack.
-1. Faça login no user que detem o acesso ao openstack do OpenStack. \
-No nosso caso o deploy foi feito no user "jujuclient"
-```sudo -iu jujucliente```
-3. Exporte as credenciais da API do OpenStack \
-```source openrc```
-4. Verifique se o acesso está correto \
-```openstack server list```
-5. Crie a network
+1. Exporte as credenciais da API do OpenStack \
 ```sh
-openstack network create \
---share \
---external \
---provider-network-type flat \
---provider-physical-network physnet2 \
-rede_publica
+source openrc
 ```
-saída:
-```
-+---------------------------+--------------------------------------+
-| Field                     | Value                                |
-+---------------------------+--------------------------------------+
-| admin_state_up            | UP                                   |
-| availability_zone_hints   |                                      |
-| availability_zones        |                                      |
-| created_at                | 2024-05-07T23:23:42Z                 |
-| description               |                                      |
-| dns_domain                | None                                 |
-| id                        | bc0a3e88-29d9-4a29-8ea1-c1ed5c3ca89d |
-| ipv4_address_scope        | None                                 |
-| ipv6_address_scope        | None                                 |
-| is_default                | False                                |
-| is_vlan_transparent       | None                                 |
-| mtu                       | 1500                                 |
-| name                      | rede publica                         |
-| port_security_enabled     | False                                |
-| project_id                | c5017cb7b19041918102de1d97d1b52d     |
-| provider:network_type     | flat                                 |
-| provider:physical_network | physnet2                             |
-| provider:segmentation_id  | None                                 |
-| qos_policy_id             | None                                 |
-| revision_number           | 1                                    |
-| router:external           | External                             |
-| segments                  | None                                 |
-| shared                    | True                                 |
-| status                    | ACTIVE                               |
-| subnets                   |                                      |
-| tags                      |                                      |
-| updated_at                | 2024-05-07T23:23:43Z                 |
-+---------------------------+--------------------------------------+
-```
-6. Crie uma subnet para esta rede
+2. Crie a network
 ```sh
-openstack subnet create \
---network 'network externa' \
---subnet-range 200.x.x.112/25 \
---allocation-pool start=200.x.x.112,end=200.x.x.119 \
---gateway 200.x.x.1 \
---dns-nameserver 200.x.x.1 --dns-nameserver 1.1.1.1 --dns-nameserver 8.8.8.8 \
---no-dhcp \
-'subnet publica'
+openstack network create 				\
+	--share --external 					\
+	--provider-network-type flat 		\
+	--provider-physical-network physnet \
+	public
 ```
-saída:
+3. Crie a subnet IPv4
+```sh
+openstack subnet create 									\
+	--network 'public' 										\
+	--subnet-range 200.18.99.0/24 							\
+	--allocation-pool start=200.18.99.112,end=200.18.99.119 \
+	--gateway 200.18.99.1 									\
+	--dns-nameserver 1.1.1.1 								\
+	--dns-nameserver 8.8.8.8 								\
+	--dns-nameserver 1.0.0.1 								\
+	--dns-nameserver 8.8.4.4 								\
+	--no-dhcp												\
+	public-ipv4
 ```
-+----------------------+--------------------------------------+
-| Field                | Value                                |
-+----------------------+--------------------------------------+
-| allocation_pools     | 200.x.x.112-200.x.x.119              |
-| cidr                 | 200.x.x.0/25                         |
-| created_at           | 2024-05-07T23:46:56Z                 |
-| description          |                                      |
-| dns_nameservers      | 1.1.1.1, 200.x.x.1, 8.8.8.8          |
-| dns_publish_fixed_ip | None                                 |
-| enable_dhcp          | False                                |
-| gateway_ip           | 200.x.x.1                            |
-| host_routes          |                                      |
-| id                   | 0456f05f-1766-4abd-b7b6-c0fb0ba6bc59 |
-| ip_version           | 4                                    |
-| ipv6_address_mode    | None                                 |
-| ipv6_ra_mode         | None                                 |
-| name                 | subnet publica                       |
-| network_id           | bc0a3e88-29d9-4a29-8ea1-c1ed5c3ca89d |
-| project_id           | c5017cb7b19041918102de1d97d1b52d     |
-| revision_number      | 0                                    |
-| segment_id           | None                                 |
-| service_types        |                                      |
-| subnetpool_id        | None                                 |
-| tags                 |                                      |
-| updated_at           | 2024-05-07T23:46:56Z                 |
-+----------------------+--------------------------------------+
+4. Crie a subnet IPv6
+#### criar um escopo de endereços
+```sh
+openstack address scope create \
+	--share --ip-version 6 	   \
+	ipv6-global
 ```
-Voi-là, temos nossa rede flat pública lançada pela CLI
+#### criar uma pool de subnets
+```sh
+openstack subnet pool create 			\
+	--address-scope ipv6-global 		\
+	--share --default 					\
+	--pool-prefix 2801:b0:30:101::/64 	\
+	--default-prefix-length 64 			\
+	--min-prefix-length 64 				\
+	--max-prefix-length 64 				\
+	default-public-pool-ipv6
+```
+#### criar uma subnet
+```sh
+openstack subnet create															 \
+	--ip-version 6																 \
+	--ipv6-address-mode slaac													 \
+	--subnet-range 2801:b0:30:101::/64											 \
+	--subnet-pool default-public-pool-ipv6										 \
+	--gateway 2801:b0:30:101::1													 \
+	--allocation-pool start=2801:b0:30:101::2:0000,end=2801:b0:30:101::ffff:0000 \
+	--dns-nameserver 2606:4700:4700::1111										 \
+	--dns-nameserver 2001:4860:4860::8888										 \
+	--dns-nameserver 2606:4700:4700::1001										 \
+	--dns-nameserver 2001:4860:4860::8844										 \
+	--network public															 \
+	public-ipv6
+```
 
 ## Referências
 Provider networks - https://docs.openstack.org/install-guide/launch-instance-networks-provider.html \
